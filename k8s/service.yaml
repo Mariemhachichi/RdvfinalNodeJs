@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rdv-service
+spec:
+  selector:
+    app: rdv-app
+  ports:
+    - protocol: TCP
+      port: 80        
+      targetPort: 9090 
+  type: ClusterIP  

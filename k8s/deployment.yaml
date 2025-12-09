@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rdv-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rdv-app
+  template:
+    metadata:
+      labels:
+        app: rdv-app
+    spec:
+      containers:
+      - name: rdv-app
+        image: rdvfinal-nodejs:latest   # ton image locale
+        imagePullPolicy: Never          # <-- ici !
+        ports:
+        - containerPort: 9090
+        env:
+        - name: URL_BD
+          value: "mongodb+srv://mariem:123@cluster0.aqjzjgs.mongodb.net/test?retryWrites=true&w=majority"
+        - name: PORT
+          value: "9090"
+        - name: SECRET_KEY
+          value: "azertyuiopqsdfghjklm"
+        - name: EMAIL_USER
+          value: "hchichimariem23@gmail.com"
+        - name: EMAIL_PASS
+          value: "kchjwomtcingibkn"
