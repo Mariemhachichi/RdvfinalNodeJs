@@ -1,0 +1,22 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  IMAGE_NAME: registry.gitlab.com/hchichimariem23/rdv-app:latest
+
+build:
+  stage: build
+  image: node:18
+  script:
+    - npm install
+    - npm test || true
+    - docker build -t $IMAGE_NAME .
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+    - docker push $IMAGE_NAME
+
+deploy:
+  stage: deploy
+  image: alpine/helm:3.12.3
+  script:
+    - helm upgrade --install rdv-app ./rdvchart --set image.repository=$IMAGE_NAME
